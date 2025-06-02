@@ -6,6 +6,7 @@ import (
 	"io"
 	"math/rand"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -34,7 +35,7 @@ func (a *Auth) generateRandomString(length int) string {
 
 func (a *Auth) Authorize() error {
 	url := "https://accounts.spotify.com/authorize?response_type=code&client_id=" + a.clientID +
-		"&scope=playlist-modify-public%20playlist-modify-private&redirect_uri=https://classicum.fly.dev&state=" +
+		"&scope=playlist-modify-public%20playlist-modify-private&redirect_uri=" + os.Getenv("SPOTIFY_FALLBACK") + "&state=" +
 		a.generateRandomString(10) + "&show_dialog=false"
 
 	fmt.Println("Open this URL in your browser: " + url)
@@ -93,7 +94,7 @@ func (a *Auth) getToken() (*TokenResponse, error) {
 func (a *Auth) getTokenWithCode(code string) (*TokenResponse, error) {
 	url := "https://accounts.spotify.com/api/token"
 
-	bodyReq := fmt.Sprintf("grant_type=authorization_code&code=%s&redirect_uri=https://classicum.fly.dev&client_id=%s&client_secret=%s",
+	bodyReq := fmt.Sprintf("grant_type=authorization_code&code=%s&redirect_uri="+os.Getenv("SPOTIFY_FALLBACK")+"&client_id=%s&client_secret=%s",
 		code, a.clientID, a.apiKey)
 
 	request, err := http.NewRequest("POST", url, strings.NewReader(bodyReq))
