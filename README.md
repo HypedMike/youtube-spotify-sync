@@ -9,7 +9,7 @@ I created this utility to keep two playlist synced. The process is simple:
 3 - search all the songs from YouTube on Spotify
 4 - Add all the results in the Spotify Playlist
 
-# Requiriments
+# Requirements
 - Google Cloud Api Key with Data API enabled
 - Spotify API Key
 - a fallback website for Spotify Authentication
